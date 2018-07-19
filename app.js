@@ -33,7 +33,7 @@ const findDocuments = function(db, callback) {
 //FIND ALL DOCUMENTS
 const updateDocument = function(db, callback) {
     // get the documents collection
-    const collection+ db.collection('documents');
+    const collection = db.collection('documents');
     // update document where a is 2, set b equal to 1
     collection.updateOne({ a : 2 },
     { $set: {b:1}}, function(err, result) {
@@ -80,7 +80,7 @@ const findDocuments = function(db, callback) {
 }
 
 //UPDATE A DOCUMENT
-cont updateDocument = function(db, callback) {
+const updateDocument = function(db, callback) {
     //get the documents collection
     const collection = db.collection('documents');
     //Update document where a is 2, set b equal to 1
@@ -186,4 +186,3 @@ const indexCollection = function(db, callback) {
       });
     });
   }); 
-   
