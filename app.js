@@ -7,15 +7,21 @@ const url = 'mongodb://localhost:27017';
 //Database Name
 const dbName = 'myproject';
 
-//Use connect method to connect to the server
-MongoClient.connect(url, function(err, client) {
-    assert.equal(null,err);
-    console.log("Connected successfully to server");
 
-    const db = client.db(dbName);
-
-    client.close();
-});
+const insertDocuments = function(db, callback) {
+    // Get the documents collection
+    const collection = db.collection('documents');
+    // Insert some documents
+    collection.insertMany([
+      {a : 1}, {a : 2}, {a : 3}
+    ], function(err, result) {
+      assert.equal(err, null);
+      assert.equal(3, result.result.n);
+      assert.equal(3, result.ops.length);
+      console.log("Inserted 3 documents into the collection");
+      callback(result);
+    });
+  }
 
 //INSERT A DOCUMENT
 const findDocuments = function(db, callback) {
@@ -39,81 +45,14 @@ const updateDocument = function(db, callback) {
     { $set: {b:1}}, function(err, result) {
         assert.equal(err, null);
         assert.equal(1, result.result.n);
-        console.og("Updated the document with the field a equal to 2");
+        console.log("Updated the document with the field a equal to 2");
         callback(result);
     });
 }
 
-const MongoClient = require('mongodb').MongoClient;
-const assert = require('assert');
 
-//connection URL
-const url = 'mongodb://localhost27017';
 
-//database name
-const dbName = 'myproject';
-// use connect method to connect to the server
-MongoClient.connect(url, function(err, client) {
-    assert.equal(null, err);
-    console.log("Connected successfully to server");
 
-    const db = client.db(dbName);
-
-    insertDocuments(db, function() {
-        findDocuments(db, function() {
-            client.close();
-        });
-    });
-});
-
-//FIND DOCUMENTS WITH A QUERY FILTER
-const findDocuments = function(db, callback) {
-    // get the documents collection
-    const collection = db.collection('documents');
-    //find some documents
-    collection.find({'a': 3 }).toArray(function(err, docs) {
-        assert.equal(err, null);
-        console.log("Found the following records");
-        console.log(docs);
-        callback(docs);
-    });
-}
-
-//UPDATE A DOCUMENT
-const updateDocument = function(db, callback) {
-    //get the documents collection
-    const collection = db.collection('documents');
-    //Update document where a is 2, set b equal to 1
-    collection.updateOne({ a :2 }, { $set: { b : 1}}, function(err, result) {
-        assert.equal(err, null);
-        assert.equal(1, result.result.n);
-        console.log("Updated the document with the field a equal to 2");
-        callback(results);
-    });
-}
-
-const MongoClient = require('mongodb').MongoClient;
-const assert = require('assert');
-
-//connection url
-const url = 'mongodb://locoalhost:27017';
-
-//database Name
-const dbName = 'myproject';
-
-//use connect method to connect to the server
-MongoClient.connect(url, function(err, client) {
-    assert.equal(null, err);
-    console.log("Connected successfully to server");
-
-    const db = client.db(dbName);
-
-    insertDocuments(db, function() {
-        updateDocument(db, function() {
-            client.close();
-        });
-    });
-});
 
 //REMOVE A DOCUMENT
 const removeDocument = function(db, callback) {
@@ -128,30 +67,8 @@ const removeDocument = function(db, callback) {
     });    
 }
 
-const MongoClient = require('mongodb').MongoClient;
-const assert = require('assert');
 
-// Connection URL
-const url = 'mongodb://localhost:27017';
 
-// Database Name
-const dbName = 'myproject';
-
-// Use connect method to connect to the server
-MongoClient.connect(url, function(err, client) {
-  assert.equal(null, err);
-  console.log("Connected successfully to server");
-
-  const db = client.db(dbName);
-
-  insertDocuments(db, function() {
-    updateDocument(db, function() {
-      removeDocument(db, function() {
-        client.close();
-      });
-    });
-  });
-});
 
 //INDEX A COLLECTIION
 const indexCollection = function(db, callback) {
@@ -165,13 +82,7 @@ const indexCollection = function(db, callback) {
     );
   };
 
-  const MongoClient = require('mongodb').MongoClient;
-  const assert = require('assert');
   
-  // Connection URL
-  const url = 'mongodb://localhost:27017';
-  
-  const dbName = 'myproject';
   
   // Use connect method to connect to the server
   MongoClient.connect(url, function(err, client) {
